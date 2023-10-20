@@ -11,9 +11,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { useNavigate } from "react-router-dom";
-const socket = io.connect("http://localhost:3003");
+const socket = io.connect(process.env.REACT_APP_ORDER_URL);
 
 const BankPayment = ({ props, toast }) => {
+  const [isGetMessage, setIsGetMessage] = useState(false);
   const [open, setOpen] = useState(false);
   const [bank, setBank] = useState(null);
   const navigate = useNavigate();
