@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 const socket = io.connect(process.env.REACT_APP_ORDER_URL);
 
 const BankPayment = ({ props, toast }) => {
-  const [isGetMessage, setIsGetMessage] = useState(false);
+  const [isGetMessage, setIsGetMessage] = useState(false)
   const [open, setOpen] = useState(false);
   const [bank, setBank] = useState(null);
   const navigate = useNavigate();
@@ -83,26 +83,25 @@ const BankPayment = ({ props, toast }) => {
       </Typography>
       <Box
         component={"div"}
-        className="flex lg:flex-row w-full gap-5 md:flex-col"
+        className="flex lg:flex-row w-full gap-10 md:flex-col sm:flex-row flex-col"
       >
         <Box
           component={"div"}
-          sx={{ flex: 1, justifyContent: "center" }}
-          className="flex flex-row"
+          className="flex flex-row self-center w-8/12 xl:w-4/12 2xl:w-3/12"
         >
           <QRCode
             value={props.qrCode}
-            size={300}
+            // size={300}
             level="M"
             includeMargin={true}
             renderAs="svg"
             fgColor={"#25174E"}
             bgColor="transparent"
-            style={{ borderRadius: 10 }}
+            style={{ borderRadius: 10, width: "100%", height: "100%"}}
             className="!bg-gradient-to-br from-green-200 via-purple-200 to-green-200"
           />
         </Box>
-        <Box component={"div"} className="flex flex-col gap-5" sx={{ flex: 1 }}>
+        <Box component={"div"} className="flex flex-col gap-5">
           <Box component={"div"} className="flex flex-row gap-2">
             <img src={bank?.logo} width={100} height={55} />
             <Box component={"div"} className="flex flex-col">
