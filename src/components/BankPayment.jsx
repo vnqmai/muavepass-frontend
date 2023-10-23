@@ -92,7 +92,7 @@ const BankPayment = ({ props, toast }) => {
           <QRCode
             value={props.qrCode}
             // size={300}
-            level="M"
+            level="M" 
             includeMargin={true}
             renderAs="svg"
             fgColor={"#25174E"}
