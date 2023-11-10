@@ -1,6 +1,7 @@
 import { Box, Typography, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
+
 import { cancelOrder, getListBank } from "../api/payosApi";
 import io from "socket.io-client";
 
@@ -10,17 +11,25 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { CircularProgress } from "react-cssfx-loading";
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate } from "react-router-dom";
+import DownloadIcon from "@mui/icons-material/Download";
+import ShareIcon from "@mui/icons-material/Share";
+import { toast } from "react-toastify";
+import { toJpeg } from "html-to-image";
+
 const socket = io.connect(process.env.REACT_APP_ORDER_URL);
 
-const BankPayment = ({ props, toast }) => {
+const BankPayment = ({ props }) => {
   const [open, setOpen] = useState(false);
+  const [openQR, setOpenQR] = useState(false);
   const [isCheckout, setIsCheckout] = useState(false);
   const [bank, setBank] = useState(null);
+
   const navigate = useNavigate();
   const handleCopyText = (textToCopy) => {
     // Tạo một textarea ẩn để sao chép nội dung
+    toast.success("Sao chép thành công");
     navigator.clipboard.writeText(textToCopy);
   };
 
@@ -40,6 +49,22 @@ const BankPayment = ({ props, toast }) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const downloadQRCode = async () => {
+    var node = document.getElementById("my-node");
+
+    toJpeg(node, {quality: 0.95})
+      .then(function (dataUrl) {
+        // download(dataUrl, "my-node.png");
+        const link = document.createElement('a');
+        link.download =  `${props.accountNumber}_${props.bin}_${props.amount}_${props.orderCode}_Qrcode.png`;
+        link.href = dataUrl;
+        link.click();
+        link.remove();
+      })
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
   };
   useEffect(() => {
     if (!props?.bin) return;
@@ -92,17 +117,18 @@ const BankPayment = ({ props, toast }) => {
           component={"div"}
           className="flex flex-row self-center w-8/12 xl:w-4/12 2xl:w-3/12"
         >
-          <QRCode
-            value={props.qrCode}
-            // size={300}
-            level="M"
-            includeMargin={true}
-            renderAs="svg"
-            fgColor={"#25174E"}
-            bgColor="transparent"
-            style={{ borderRadius: 10, width: "100%", height: "100%" }}
-            className="!bg-gradient-to-br from-green-200 via-purple-200 to-green-200"
-          />
+          <Button className="w-full h-full" onClick={() => setOpenQR(true)}>
+            <QRCode
+              value={props.qrCode}
+              level="M"
+              includeMargin={true}
+              renderAs="svg"
+              fgColor={"#25174E"}
+              bgColor="transparent"
+              style={{ borderRadius: 10, width: "100%", height: "100%" }}
+              className="!bg-gradient-to-br from-green-200 via-purple-200 to-green-200"
+            />
+          </Button>
         </Box>
         <Box component={"div"} className="flex flex-col gap-5">
           <Box component={"div"} className="flex flex-row gap-2">
@@ -220,7 +246,7 @@ const BankPayment = ({ props, toast }) => {
             )}
             {isCheckout && (
               <>
-              <CheckIcon width={30} height={30} color="success"/>
+                <CheckIcon width={30} height={30} color="success" />
                 <Typography className="!text-lg text-gray-700">
                   Đơn hàng đã được thanh toán thành công
                 </Typography>
@@ -260,6 +286,45 @@ const BankPayment = ({ props, toast }) => {
             Xác nhận
           </Button>
         </DialogActions>
+      </Dialog>
+      {/*Dialog for Qr Code*/}
+      <Dialog open={openQR} onClose={() => setOpenQR(false)}>
+        <Box
+          component={"div"}
+          className="p-20 flex flex-col justify-center items-center gap-5"
+        >
+          <Typography className="text-center">
+            Mở App Ngân hàng bất kỳ để quét mã VietQR
+          </Typography>
+          <QRCode
+            id="my-node"
+            value={props.qrCode}
+            level="M"
+            includeMargin={true}
+            renderAs="svg"
+            fgColor={"#25174E"}
+            bgColor="transparent"
+            style={{ borderRadius: 10, width: "100%", height: "100%" }}
+            className="!bg-gradient-to-br from-green-200 via-purple-200 to-green-200"
+          />
+          <Box component={"div"} className="flex flex-row gap-10 pt-10">
+            <Button
+              variant="outlined"
+              startIcon={<DownloadIcon />}
+              color="inherit"
+              onClick={downloadQRCode}
+            >
+              <Typography className="normal-case">Tải xuống</Typography>
+            </Button>
+            <Button
+              variant="outlined"
+              color="inherit"
+              startIcon={<ShareIcon />}
+            >
+              <Typography className="normal-case">Chia sẻ</Typography>
+            </Button>
+          </Box>
+        </Box>
       </Dialog>
     </Box>
   );
