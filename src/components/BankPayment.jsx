@@ -9,13 +9,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import { CircularProgress } from "react-cssfx-loading";
+import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from "react-router-dom";
 const socket = io.connect(process.env.REACT_APP_ORDER_URL);
 
 const BankPayment = ({ props, toast }) => {
-  const [isGetMessage, setIsGetMessage] = useState(false)
   const [open, setOpen] = useState(false);
+  const [isCheckout, setIsCheckout] = useState(false);
   const [bank, setBank] = useState(null);
   const navigate = useNavigate();
   const handleCopyText = (textToCopy) => {
@@ -51,16 +52,18 @@ const BankPayment = ({ props, toast }) => {
         .catch((err) => console.log(err));
     })();
     socket.on("paymentUpdated", (data) => {
-      console.log(data);
-      socket.emit("leaveOrderRoom", props.orderCode);
-      toast.success("Thanh toán thành công!");
-      setTimeout(() => {
-        navigate("/result", {
-          state: {
-            orderCode: props.orderCode,
-          },
-        });
-      }, 3000);
+      if (data.orderId === props.orderCode) {
+        setIsCheckout(true);
+        socket.emit("leaveOrderRoom", props.orderCode);
+
+        setTimeout(() => {
+          navigate("/result", {
+            state: {
+              orderCode: props.orderCode,
+            },
+          });
+        }, 3000);
+      }
 
       // Cập nhật trạng thái đơn hàng trên giao diện người dùng
     });
@@ -92,12 +95,12 @@ const BankPayment = ({ props, toast }) => {
           <QRCode
             value={props.qrCode}
             // size={300}
-            level="M" 
+            level="M"
             includeMargin={true}
             renderAs="svg"
             fgColor={"#25174E"}
             bgColor="transparent"
-            style={{ borderRadius: 10, width: "100%", height: "100%"}}
+            style={{ borderRadius: 10, width: "100%", height: "100%" }}
             className="!bg-gradient-to-br from-green-200 via-purple-200 to-green-200"
           />
         </Box>
@@ -200,11 +203,30 @@ const BankPayment = ({ props, toast }) => {
               </Button>
             </Box>
           </Box>
+
           <Typography className="!text-sm text-gray-700">
             Lưu ý : Nhập chính xác nội dung{" "}
             <span className="!font-bold">{props.description}</span> khi chuyển
             khoản
           </Typography>
+          <Box component={"div"} className="flex flex-row gap-5 items-center">
+            {!isCheckout && (
+              <>
+                <CircularProgress color="gray" width="30px" height="30px" />
+                <Typography className="!text-lg text-gray-700">
+                  Đơn hàng đang chờ được thanh toán
+                </Typography>
+              </>
+            )}
+            {isCheckout && (
+              <>
+              <CheckIcon width={30} height={30} color="success"/>
+                <Typography className="!text-lg text-gray-700">
+                  Đơn hàng đã được thanh toán thành công
+                </Typography>
+              </>
+            )}
+          </Box>
         </Box>
       </Box>
       <Typography className="!text-sm text-gray-700 p-5">
@@ -226,9 +248,7 @@ const BankPayment = ({ props, toast }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Huỷ bỏ đơn hàng"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Huỷ bỏ đơn hàng"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Bạn có chắc muốn huỷ đơn hàng hay không?

@@ -8,20 +8,28 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import "react-toastify/dist/ReactToastify.css";
-import Logo from "../static/images/Logo";
 import { useNavigate } from "react-router-dom";
 import { createPaymentLink } from "../api/payosApi";
 import Header from "../components/Header";
+import useScript from "react-script-hook";
 
 export default function DemoPayOS() {
   const colorMode = "light";
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [openUICustomLoading, setOpenUICustomLoading] = useState(false);
+  const [redirectLoading, setRedirectLoading] = useState(false);
+  const [openDialogLoading, setOpenDialogLoading] = useState(false);
   const productNameRef = useRef("");
   const descriptionRef = useRef("");
   const priceRef = useRef(1000);
+
+  const [loading, error] = useScript({
+    src: process.env.REACT_APP_PAYOS_SCRIPT,
+    checkForExisting: true,
+  });
+  const RETURN_URL = `${window.location.href}result/`;
+  const CANCEL_URL = `${window.location.href}result/`;
   const [currentTheme, setCurrentTheme] = useState(
     createTheme({
       palette: {
@@ -31,6 +39,8 @@ export default function DemoPayOS() {
   );
 
   useEffect(() => {
+    console.log(loading, error);
+    console.log(window.PayOSCheckout);
     if (colorMode === "dark") {
       setCurrentTheme(
         createTheme({
@@ -51,48 +61,107 @@ export default function DemoPayOS() {
         })
       );
     }
-  }, [colorMode]);
+  }, [colorMode, loading]);
 
-  const createPaymentLinkHandle = async function () {
+  const createPaymentLinkHandle = async function (
+    callbackFunction,
+    setLoading
+  ) {
     setLoading(true);
-    const body = JSON.stringify({
-      description: descriptionRef.current.value,
-      productName: productNameRef.current.value,
-      price: Number(priceRef.current.value),
-      returnUrl: `${window.location.href}result/`,
-      cancelUrl: `${window.location.href}result/`,
-    });
-    createPaymentLink(body)
-      .then((data) => {
-        if (data.error == 0) {
-          const {
-            accountName,
-            accountNumber,
-            amount,
-            description,
-            orderCode,
-            qrCode,
-            bin,
-          } = data.data;
-          navigate("/payment", {
-            state: {
-              accountName,
-              accountNumber,
-              amount,
-              description,
-              orderCode,
-              qrCode,
-              bin,
-            },
-          });
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-        toast.error("Có lỗi xảy ra");
+    try {
+      const body = JSON.stringify({
+        description: descriptionRef.current.value,
+        productName: productNameRef.current.value,
+        price: Number(priceRef.current.value),
+        returnUrl: RETURN_URL,
+        cancelUrl: CANCEL_URL,
       });
+      let response = await createPaymentLink(body);
+      if (response.error != 0) throw new Error("Call Api failed: ");
+      callbackFunction(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast.error("Có lỗi xảy ra");
+    }
+  };
+  const openUICustom = (checkoutResponse) => {
+    const {
+      accountName,
+      accountNumber,
+      amount,
+      description,
+      orderCode,
+      qrCode,
+      bin,
+    } = checkoutResponse;
+    navigate("/payment", {
+      state: {
+        accountName,
+        accountNumber,
+        amount,
+        description,
+        orderCode,
+        qrCode,
+        bin,
+      },
+    });
+  };
+  const redirectPaymentLink = async function (checkoutResponse) {
+    if (checkoutResponse) {
+      let url = checkoutResponse.checkoutUrl;
+      if (checkoutResponse.checkoutUrl.startsWith("https://dev.pay.payos.vn")) {
+        url = checkoutResponse.checkoutUrl.replace(
+          "https://dev.pay.payos.vn",
+          "https://next.dev.pay.payos.vn"
+        );
+      }
+
+      if (checkoutResponse.checkoutUrl.startsWith("https://pay.payos.vn")) {
+        url = checkoutResponse.checkoutUrl.replace(
+          "https://pay.payos.vn",
+          "https://next.pay.payos.vn"
+        );
+      }
+      window.location.href = url;
+    }
+  };
+
+  const openPaymentDialog = async function (checkoutResponse) {
+    if (checkoutResponse) {
+      let url = checkoutResponse.checkoutUrl;
+      if (checkoutResponse.checkoutUrl.startsWith("https://dev.pay.payos.vn")) {
+        url = checkoutResponse.checkoutUrl.replace(
+          "https://dev.pay.payos.vn",
+          "https://next.dev.pay.payos.vn"
+        );
+      }
+      if (checkoutResponse.checkoutUrl.startsWith("https://pay.payos.vn")) {
+        url = checkoutResponse.checkoutUrl.replace(
+          "https://pay.payos.vn",
+          "https://next.pay.payos.vn"
+        );
+      }
+      // console.log(url);
+      let { open } = window.PayOSCheckout.usePayOS({
+        RETURN_URL: RETURN_URL,
+        ELEMENT_ID: "config_root",
+        CHECKOUT_URL: url,
+        onExit: (eventData) => {
+          console.log(eventData);
+        },
+        onSuccess: (eventData) => {
+          console.log(eventData);
+          window.location.href = `${RETURN_URL}?orderCode=${eventData.orderCode}`;
+        },
+        onCancel: (eventData) => {
+          console.log(eventData);
+          window.location.href = `${CANCEL_URL}?orderCode=${eventData.orderCode}`;
+        },
+      });
+      open();
+    }
   };
   return (
     <ThemeProvider theme={currentTheme}>
@@ -100,7 +169,7 @@ export default function DemoPayOS() {
         component={"div"}
         className="flex flex-col !content-center flex-wrap gap-5"
       >
-        <Header/>
+        <Header />
         <Box
           component="div"
           className="w-3/4 md:w-1/2"
@@ -149,15 +218,55 @@ export default function DemoPayOS() {
               />
             </Box>
           </Box>
-          <Box component="div">
+          <Box component="div" className="flex flex-col gap-3 items-center">
             <Button
               variant="contained"
-              onClick={createPaymentLinkHandle}
-              disabled={loading}
+              onClick={() =>
+                createPaymentLinkHandle(redirectPaymentLink, setRedirectLoading)
+              }
+              disabled={redirectLoading}
               className="!bg-[#5D5FEF] !normal-case"
             >
               Đến trang thanh toán
-              {loading ? (
+              {redirectLoading ? (
+                <>
+                  {" "}
+                  &nbsp; <CircularProgress className="!text-white" size={20} />
+                </>
+              ) : (
+                ""
+              )}
+            </Button>
+            <Typography>Hoặc</Typography>
+            <Button
+              variant="contained"
+              onClick={() =>
+                createPaymentLinkHandle(openPaymentDialog, setOpenDialogLoading)
+              }
+              disabled={openDialogLoading}
+              className="!bg-[#5D5FEF] !normal-case"
+            >
+              Mở Dialog thanh toán
+              {openDialogLoading ? (
+                <>
+                  {" "}
+                  &nbsp; <CircularProgress className="!text-white" size={20} />
+                </>
+              ) : (
+                ""
+              )}
+            </Button>
+            <Typography>Hoặc</Typography>
+            <Button
+              variant="contained"
+              onClick={() =>
+                createPaymentLinkHandle(openUICustom, setOpenUICustomLoading)
+              }
+              disabled={openUICustomLoading}
+              className="!bg-[#5D5FEF] !normal-case"
+            >
+              Chuyển trang giao diện tùy chỉnh
+              {openUICustomLoading ? (
                 <>
                   {" "}
                   &nbsp; <CircularProgress className="!text-white" size={20} />
