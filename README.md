@@ -1,23 +1,23 @@
-### Đây là bản hướng dẫn cho cổng thanh toán Payos
+### This is a guide for Payos payment gateway
 
-Để chạy được bản này bạn vui lòng làm theo các bước sau:
-### Bước 1: Cài đặt thư viện
+To run this version, please follow these steps:
+### Step 1: Install the library
 ```
-    npm install 
-```
-
-### Bước 2: Thêm biến môi trường trong file .env
-```
-    REACT_APP_ORDER_URL = {Your URL server} //Điền ở đây
-
-    REACT_APP_LISTS_BANK_URL = https://api.vietqr.io/v2/banks
-
-    REACT_APP_PAYOS_SCRIPT = https://cdn.payos.vn/payos-checkout/v1/stable/payos-initialize.js
-
+     npm install
 ```
 
-### Bước 3: Chạy dự án
+### Step 2: Add environment variables in the .env file
+```
+     REACT_APP_ORDER_URL = {Your URL server} //Fill in here
+
+     REACT_APP_LISTS_BANK_URL = https://api.vietqr.io/v2/banks
+
+     REACT_APP_PAYOS_SCRIPT = https://cdn.payos.vn/payos-checkout/v1/stable/payos-initialize.js
 
 ```
-    npm start
+
+### Step 3: Run the project
+
+```
+     npm start
 ```
