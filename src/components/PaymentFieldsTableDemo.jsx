@@ -53,7 +53,7 @@ export default function PaymentFieldsTableDemo({ data }) {
     );
   }
   return (
-		<Box component={"div"}>
+		<Box component={"div"} className="mx-5">
       <CssBaseline />
 			<Box sx={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
 				<Paper sx={{ overflow: "hidden" }}>
