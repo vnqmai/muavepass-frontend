@@ -1,11 +1,11 @@
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import DemoPayOS from "./pages/DemoPayOS";
-import { Payment } from "@mui/icons-material";
 import Result from "./pages/Result";
 import { Box, Drawer, ThemeProvider } from "@mui/material";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Payment from "./pages/Payment";
 function App() {
   return (
     <Provider store={store}>

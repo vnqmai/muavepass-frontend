@@ -19,7 +19,6 @@ const Payment = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const location = useLocation();
   const paramsValue = location.state;
-
   if (paramsValue === null || paramsValue.qrCode == null) {
     return <Typography>Some thing went wrong!</Typography>;
   }
