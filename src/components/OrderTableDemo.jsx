@@ -11,8 +11,9 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { useSelector } from "react-redux";
 
 function TableHeader() {
   return (
@@ -25,33 +26,9 @@ function TableHeader() {
 }
 
 export default function OrderTableDemo({ data }) {
-  const colorMode = 'light';
-  const [currentTheme, setCurrentTheme] = useState(createTheme({
-    palette: {
-      mode: 'light',
-    }
-  }));
-  useEffect(() => {
-    if (colorMode === 'dark') {
-      setCurrentTheme(createTheme({
-        palette: {
-          mode: 'dark',
-          background: {
-            default: "#1b1b1d"
-          }
-        }
-      }));
-    } else {
-      setCurrentTheme(createTheme({
-        palette: {
-          mode: 'light',
-        }
-      }));
-    }
-  }, [colorMode]);
   return (
-    <ThemeProvider theme={currentTheme}>
-			<CssBaseline />
+    <Box component={"div"}>
+      <CssBaseline />
       <Box sx={{ marginTop: "40px", marginBottom: "40px" }}>
         <Typography className="!text-center">
           Đơn hàng <b>{data?.id ? `#${data.id}` : "không tìm thấy"}</b>
@@ -78,7 +55,9 @@ export default function OrderTableDemo({ data }) {
                 {data ? (
                   <>
                     <TableRow key={"id"}>
-                      <TableCell align="left">Mã đơn hàng</TableCell>
+                      <TableCell align="left">
+                        <Typography>Mã đơn hàng</Typography>
+                      </TableCell>
                       <TableCell align="left">
                         <b>#{data["id"]}</b>
                       </TableCell>
@@ -121,6 +100,6 @@ export default function OrderTableDemo({ data }) {
           </TableContainer>
         </Paper>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }

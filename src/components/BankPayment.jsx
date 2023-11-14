@@ -274,9 +274,9 @@ const BankPayment = ({ props }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Huỷ bỏ đơn hàng"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" className="self-center">{"Huỷ bỏ đơn hàng"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description" sx={{color: "text.primary"}}>
             Bạn có chắc muốn huỷ đơn hàng hay không?
           </DialogContentText>
         </DialogContent>

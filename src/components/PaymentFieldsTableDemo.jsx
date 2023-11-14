@@ -43,30 +43,6 @@ function TableHeader() {
 }
 
 export default function PaymentFieldsTableDemo({ data }) {
-  const colorMode = 'light';
-  const [currentTheme, setCurrentTheme] = useState(createTheme({
-    palette: {
-      mode: 'light',
-    }
-  }));
-  useEffect(() => {
-    if (colorMode === 'dark') {
-      setCurrentTheme(createTheme({
-        palette: {
-          mode: 'dark',
-          background: {
-            default: "#1b1b1d"
-          }
-        }
-      }));
-    } else {
-      setCurrentTheme(createTheme({
-        palette: {
-          mode: 'light',
-        }
-      }));
-    }
-  }, [colorMode]);
   let webhookData = null;
   if (data) {
     const { orderCode, description, ...restData } = data.data;
@@ -77,7 +53,7 @@ export default function PaymentFieldsTableDemo({ data }) {
     );
   }
   return (
-		<ThemeProvider theme={currentTheme}>
+		<Box component={"div"}>
       <CssBaseline />
 			<Box sx={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
 				<Paper sx={{ overflow: "hidden" }}>
@@ -125,6 +101,6 @@ export default function PaymentFieldsTableDemo({ data }) {
 					</TableContainer>
 				</Paper>
 			</Box>
-		</ThemeProvider>
+		</Box>
   );
 }
