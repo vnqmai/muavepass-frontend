@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+import { green } from "@mui/material/colors";
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -9,11 +10,15 @@ export const lightTheme = createTheme({
       main: "#318657",
     },
     text: {
-        primary: "#171717",
+      primary: "#171717",
+      secondary: green[800],
+    },
+    button: {
+      active: "#F2F2F2",
     },
     background: {
-        topBar: "#fffff"
-    }
+      topBar: "#fffff",
+    },
   },
 });
 export const darkTheme = createTheme({
@@ -26,11 +31,15 @@ export const darkTheme = createTheme({
       main: "#318657",
     },
     background: {
-        topBar: "#242526"
+      topBar: "#242526",
+    },
+    button: {
+      active: "#2F3031",
     },
     text: {
-        primary: "#ffffff",
+      primary: "#ffffff",
+      secondary: green[800],
+
     },
   },
-  
 });
