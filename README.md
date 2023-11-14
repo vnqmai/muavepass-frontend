@@ -1,4 +1,4 @@
-### This is a guide for Payos payment gateway
+### This is a guide for PayOS payment gateway
 
 To run this version, please follow these steps:
 ### Step 1: Install the library
