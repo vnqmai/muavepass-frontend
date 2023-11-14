@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { createPaymentLink } from "../api/payosApi";
@@ -15,7 +14,6 @@ import Header from "../components/Header";
 import useScript from "react-script-hook";
 
 export default function DemoPayOS() {
-  const colorMode = "light";
   const navigate = useNavigate();
   const [openUICustomLoading, setOpenUICustomLoading] = useState(false);
   const [redirectLoading, setRedirectLoading] = useState(false);
@@ -30,38 +28,6 @@ export default function DemoPayOS() {
   });
   const RETURN_URL = `${window.location.href}result/`;
   const CANCEL_URL = `${window.location.href}result/`;
-  const [currentTheme, setCurrentTheme] = useState(
-    createTheme({
-      palette: {
-        mode: "light",
-      },
-    })
-  );
-
-  useEffect(() => {
-    console.log(loading, error);
-    console.log(window.PayOSCheckout);
-    if (colorMode === "dark") {
-      setCurrentTheme(
-        createTheme({
-          palette: {
-            mode: "dark",
-            background: {
-              default: "#1b1b1d",
-            },
-          },
-        })
-      );
-    } else {
-      setCurrentTheme(
-        createTheme({
-          palette: {
-            mode: "light",
-          },
-        })
-      );
-    }
-  }, [colorMode, loading]);
 
   const createPaymentLinkHandle = async function (
     callbackFunction,
@@ -164,120 +130,118 @@ export default function DemoPayOS() {
     }
   };
   return (
-    <ThemeProvider theme={currentTheme}>
+    <Box
+      component={"div"}
+      className="flex flex-col !content-center flex-wrap gap-5"
+    >
+      <Header />
       <Box
-        component={"div"}
-        className="flex flex-col !content-center flex-wrap gap-5"
+        component="div"
+        className="w-3/4 md:w-1/2"
+        sx={{ alignSelf: "center" }}
       >
-        <Header />
-        <Box
-          component="div"
-          className="w-3/4 md:w-1/2"
-          sx={{ alignSelf: "center" }}
-        >
-          <ToastContainer />
-          <Typography component="h4" variant="h4" className="!font-bold">
-            Tạo mới đơn hàng
-          </Typography>
-          <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
-            <Typography>Tên sản phẩm:</Typography>
-            <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
-              <TextField
-                id="outlined-basic"
-                label="Nhập tên sản phẩm"
-                variant="outlined"
-                defaultValue="Mì tôm Hảo Hảo ly"
-                inputRef={productNameRef}
-                fullWidth
-              />
-            </Box>
-          </Box>
-          <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
-            <Typography>Đơn giá:</Typography>
-            <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
-              <TextField
-                id="outlined-basic"
-                label="Nhập đơn giá"
-                variant="outlined"
-                defaultValue="1000"
-                inputRef={priceRef}
-                fullWidth
-              />
-            </Box>
-          </Box>
-          <Box component="div" sx={{ marginBottom: "20px" }}>
-            <Typography>Nội dung thanh toán:</Typography>
-            <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
-              <TextField
-                id="outlined-basic"
-                label="Nhập nội dung"
-                variant="outlined"
-                defaultValue="Thanh toan don hang"
-                inputRef={descriptionRef}
-                fullWidth
-              />
-            </Box>
-          </Box>
-          <Box component="div" className="flex flex-col gap-3 items-center">
-            <Button
-              variant="contained"
-              onClick={() =>
-                createPaymentLinkHandle(redirectPaymentLink, setRedirectLoading)
-              }
-              disabled={redirectLoading}
-              className="!bg-[#5D5FEF] !normal-case"
-            >
-              Đến trang thanh toán
-              {redirectLoading ? (
-                <>
-                  {" "}
-                  &nbsp; <CircularProgress className="!text-white" size={20} />
-                </>
-              ) : (
-                ""
-              )}
-            </Button>
-            <Typography>Hoặc</Typography>
-            <Button
-              variant="contained"
-              onClick={() =>
-                createPaymentLinkHandle(openPaymentDialog, setOpenDialogLoading)
-              }
-              disabled={openDialogLoading}
-              className="!bg-[#5D5FEF] !normal-case"
-            >
-              Mở Dialog thanh toán
-              {openDialogLoading ? (
-                <>
-                  {" "}
-                  &nbsp; <CircularProgress className="!text-white" size={20} />
-                </>
-              ) : (
-                ""
-              )}
-            </Button>
-            <Typography>Hoặc</Typography>
-            <Button
-              variant="contained"
-              onClick={() =>
-                createPaymentLinkHandle(openUICustom, setOpenUICustomLoading)
-              }
-              disabled={openUICustomLoading}
-              className="!bg-[#5D5FEF] !normal-case"
-            >
-              Chuyển trang giao diện tùy chỉnh
-              {openUICustomLoading ? (
-                <>
-                  {" "}
-                  &nbsp; <CircularProgress className="!text-white" size={20} />
-                </>
-              ) : (
-                ""
-              )}
-            </Button>
+        <ToastContainer />
+        <Typography component="h4" variant="h4" className="!font-bold">
+          Tạo mới đơn hàng
+        </Typography>
+        <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
+          <Typography>Tên sản phẩm:</Typography>
+          <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
+            <TextField
+              id="outlined-basic"
+              label="Nhập tên sản phẩm"
+              variant="outlined"
+              defaultValue="Mì tôm Hảo Hảo ly"
+              inputRef={productNameRef}
+              fullWidth
+            />
           </Box>
         </Box>
+        <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
+          <Typography>Đơn giá:</Typography>
+          <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
+            <TextField
+              id="outlined-basic"
+              label="Nhập đơn giá"
+              variant="outlined"
+              defaultValue="1000"
+              inputRef={priceRef}
+              fullWidth
+            />
+          </Box>
+        </Box>
+        <Box component="div" sx={{ marginBottom: "20px" }}>
+          <Typography>Nội dung thanh toán:</Typography>
+          <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
+            <TextField
+              id="outlined-basic"
+              label="Nhập nội dung"
+              variant="outlined"
+              defaultValue="Thanh toan don hang"
+              inputRef={descriptionRef}
+              fullWidth
+            />
+          </Box>
+        </Box>
+        <Box component="div" className="flex flex-col gap-3 items-center">
+          <Button
+            variant="contained"
+            onClick={() =>
+              createPaymentLinkHandle(redirectPaymentLink, setRedirectLoading)
+            }
+            disabled={redirectLoading}
+            className="!bg-[#5D5FEF] !normal-case"
+          >
+            Đến trang thanh toán
+            {redirectLoading ? (
+              <>
+                {" "}
+                &nbsp; <CircularProgress className="!text-white" size={20} />
+              </>
+            ) : (
+              ""
+            )}
+          </Button>
+          <Typography>Hoặc</Typography>
+          <Button
+            variant="contained"
+            onClick={() =>
+              createPaymentLinkHandle(openPaymentDialog, setOpenDialogLoading)
+            }
+            disabled={openDialogLoading}
+            className="!bg-[#5D5FEF] !normal-case"
+          >
+            Mở Dialog thanh toán
+            {openDialogLoading ? (
+              <>
+                {" "}
+                &nbsp; <CircularProgress className="!text-white" size={20} />
+              </>
+            ) : (
+              ""
+            )}
+          </Button>
+          <Typography>Hoặc</Typography>
+          <Button
+            variant="contained"
+            onClick={() =>
+              createPaymentLinkHandle(openUICustom, setOpenUICustomLoading)
+            }
+            disabled={openUICustomLoading}
+            className="!bg-[#5D5FEF] !normal-case"
+          >
+            Chuyển trang giao diện tùy chỉnh
+            {openUICustomLoading ? (
+              <>
+                {" "}
+                &nbsp; <CircularProgress className="!text-white" size={20} />
+              </>
+            ) : (
+              ""
+            )}
+          </Button>
+        </Box>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }

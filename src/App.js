@@ -1,8 +1,18 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 import DemoPayOS from "./pages/DemoPayOS";
-import Payment from "./pages/Payment";
+import { Payment } from "@mui/icons-material";
 import Result from "./pages/Result";
-
+import { Box, ThemeProvider } from "@mui/material";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
+function App() {
+  return (
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  );
+}
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,8 +28,22 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
-  return <RouterProvider router={router} />;
-}
+const Routes = () => {
+  const theme = useSelector((state) => state.theme.mode);
+  return (
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          bgcolor: "background.default",
+          color: "text.primary",
+          minHeight: "100vh",
+        }}
+        component={"div"}
+      >
+        <RouterProvider router={router} />
+      </Box>
+    </ThemeProvider>
+  );
+};
 
 export default App;

@@ -18,13 +18,13 @@ import ShareIcon from "@mui/icons-material/Share";
 import { toast } from "react-toastify";
 import { toJpeg } from "html-to-image";
 
-const socket = io.connect(process.env.REACT_APP_ORDER_URL);
 
 const BankPayment = ({ props }) => {
   const [open, setOpen] = useState(false);
   const [openQR, setOpenQR] = useState(false);
   const [isCheckout, setIsCheckout] = useState(false);
   const [bank, setBank] = useState(null);
+  const socket = io.connect(process.env.REACT_APP_ORDER_URL);
 
   const navigate = useNavigate();
   const handleCopyText = (textToCopy) => {
