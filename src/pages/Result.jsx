@@ -10,11 +10,18 @@ export default function Result() {
   const [order, setOrder] = useState();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
-  const paramsValue = location.state;
-
+  let orderCode = null;
+  let paramsValue = new URLSearchParams(location.search);
+  if (paramsValue.size === 0) {
+    orderCode = location.state?.orderCode;
+  }else{
+    orderCode = paramsValue.get("orderCode")
+  }
+  console.log(paramsValue.size);
   useEffect(() => {
-    if (paramsValue != null && paramsValue?.orderCode != null) {
-      getOrder(paramsValue?.orderCode)
+    if (orderCode !== null) {
+
+      getOrder(orderCode)
         .then(data => {
           console.log(data);
           if (data.error == 0) {
