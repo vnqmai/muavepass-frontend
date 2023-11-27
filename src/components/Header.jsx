@@ -34,7 +34,6 @@ const Header = () => {
   const navigate = useNavigate();
   const theme = useSelector((state) => state.theme.mode);
   const dispatch = useDispatch();
-  console.log(theme.palette.mode);
   return (
     <ThemeProvider theme={theme}>
       <Box

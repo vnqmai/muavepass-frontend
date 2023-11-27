@@ -17,10 +17,9 @@ export default function Result() {
   }else{
     orderCode = paramsValue.get("orderCode")
   }
-  console.log(paramsValue.size);
+
   useEffect(() => {
     if (orderCode !== null) {
-
       getOrder(orderCode)
         .then(data => {
           console.log(data);
