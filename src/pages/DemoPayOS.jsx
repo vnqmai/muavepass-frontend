@@ -21,6 +21,7 @@ export default function DemoPayOS() {
   const userNameRef = useRef("");
   const userEmailRef = useRef("");
   const userPhoneRef = useRef("");
+  const userIdRef = useRef("");
 
   const [loading, error] = useScript({
     src: process.env.REACT_APP_PAYOS_SCRIPT,
@@ -49,6 +50,7 @@ export default function DemoPayOS() {
           name: userNameRef.current.value,
           email: userEmailRef.current.value,
           phone: userPhoneRef.current.value,
+          id: userIdRef.current.value,
         },
         productId: product._id,
         price: product.price,
@@ -66,6 +68,7 @@ export default function DemoPayOS() {
         userName: userNameRef.current.value,
         userEmail: userEmailRef.current.value,
         userPhone: userPhoneRef.current.value,
+        userId: userIdRef.current.value,
       });
       if (order.error != 0) throw new Error("Call Api failed: create order log");
       callbackFunction(response.data);
@@ -120,74 +123,101 @@ export default function DemoPayOS() {
         <Typography component="h4" variant="h4" className="!font-bold">
           Tạo mới đơn hàng
         </Typography>
-        <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
-          <Typography>Họ và tên:</Typography>
-          <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
-            <TextField
-              id="outlined-basic"
-              label="Nhập họ tên"
-              variant="outlined"
-              defaultValue=""
-              inputRef={userNameRef}
-              fullWidth
-            />
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          createPaymentLinkHandle(openPaymentDialog, setOpenDialogLoading);
+        }} autoComplete="off">
+          <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
+            <Typography>Họ và tên:</Typography>
+            <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
+              <TextField
+                id="name"
+                name="name"
+                label="Nhập họ tên"
+                variant="outlined"
+                defaultValue=""
+                inputRef={userNameRef}
+                fullWidth
+                required
+              />
+            </Box>
           </Box>
-        </Box>
-        <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
-          <Typography>Email:</Typography>
-          <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
-            <TextField
-              id="outlined-basic"
-              label="Nhập email"
-              variant="outlined"
-              defaultValue=""
-              inputRef={userEmailRef}
-              fullWidth
-            />
+          <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
+            <Typography>Email:</Typography>
+            <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
+              <TextField
+                id="email"
+                name="email"
+                label="Nhập email"
+                variant="outlined"
+                defaultValue=""
+                inputRef={userEmailRef}
+                fullWidth
+                required
+                type="email"
+              />
+            </Box>
           </Box>
-        </Box>
-        <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
-          <Typography>Số điện thoại:</Typography>
-          <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
-            <TextField
-              id="outlined-basic"
-              label="Nhập số điện thoại"
-              variant="outlined"
-              defaultValue=""
-              inputRef={userPhoneRef}
-              fullWidth
-            />
+          <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
+            <Typography>Số điện thoại:</Typography>
+            <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
+              <TextField
+                id="phone"
+                name="phone"
+                label="Nhập số điện thoại"
+                variant="outlined"
+                defaultValue=""
+                inputRef={userPhoneRef}
+                fullWidth
+                required
+                type="phone"
+              />
+            </Box>
           </Box>
-        </Box>
-        <Box
-          sx={{
-            justifyContent: "center",
-            display: "flex",
-            marginBottom: "20px",
-          }}
-        >
-          <ProductCard product={product} hideBuyNow />
-        </Box>
-        <Box component="div" className="flex flex-col gap-3 items-center">
-          <Button
-            variant="contained"
-            onClick={() =>
-              createPaymentLinkHandle(openPaymentDialog, setOpenDialogLoading)
-            }
-            disabled={openDialogLoading}
-            className="!bg-[#26ce86] !normal-case"
+          <Box component="div" sx={{ marginTop: "20px", marginBottom: "20px" }}>
+            <Typography>CCCD (Căn cước công dân):</Typography>
+            <Box component="div" sx={{ width: "100%", marginTop: "10px" }}>
+              <TextField
+                id="userId"
+                name="userId"
+                label="Nhập số CCCD"
+                variant="outlined"
+                defaultValue=""
+                inputRef={userIdRef}
+                fullWidth
+                required
+                type="text"
+              />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              justifyContent: "center",
+              display: "flex",
+              marginBottom: "20px",
+            }}
           >
-            Thanh toán
-            {openDialogLoading ? (
-              <>
-                {" "}
-                &nbsp; <CircularProgress className="!text-white" size={20} />
-              </>
-            ) : (
-              ""
-            )}
-          </Button>
-        </Box>
+            <ProductCard product={product} hideBuyNow />
+          </Box>
+          <Box component="div" className="flex flex-col gap-3 items-center">
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={openDialogLoading}
+              className="!bg-[#26ce86] !normal-case"
+            >
+              Thanh toán
+              {openDialogLoading ? (
+                <>
+                  {" "}
+                  &nbsp; <CircularProgress className="!text-white" size={20} />
+                </>
+              ) : (
+                ""
+              )}
+            </Button>
+          </Box>
+        </form>
       </Box>
     </Box>
   );

@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
 import { useNavigate } from 'react-router-dom';
+import { formatCurrency } from '../utils/numberUtils';
 
 export default function ProductCard({product, hideBuyNow}) {
   const navigate = useNavigate();
@@ -23,11 +24,15 @@ export default function ProductCard({product, hideBuyNow}) {
           <Typography gutterBottom variant="h5" component="div">
             {`${product?.product_name} (seat: ${product?.seat})`}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', textDecoration: "line-through" }}>
-            {`Giá gốc: ${product?.cost} VND`}
-          </Typography>
+          {
+            product?.cost !== product?.price && (
+              <Typography variant="body2" sx={{ color: 'text.secondary', textDecoration: "line-through" }}>
+                {`Giá gốc: ${formatCurrency(product?.cost)}`}
+              </Typography>
+            )
+          }
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {`Giá: ${product?.price} VND`}
+            {`Giá: ${formatCurrency(product?.price)}`}
           </Typography>
         </CardContent>
       </CardActionArea>

@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductDetail } from "../api/productsApi";
@@ -25,11 +25,11 @@ const ProductDetail = () => {
     <>
       <Header></Header>
       <Box sx={{ p: "30px" }}>
-        <h1>{`[HCM] Family show: "Beauty and the Beast" | THE UK PANTO (seat: ${product?.seat})`}</h1>
-        <Box sx={{ display: "flex", gap: 2, marginTop: "30px" }}>
-          <Box sx={{ width: "50%" }}>
+        <Typography variant="h4">{`${product?.product_name} (ghế: ${product?.seat})`}</Typography>
+        <Box sx={{ display: "flex", gap: 2, marginTop: "30px", flexWrap: "wrap" }}>
+          <Box sx={{ width: { xs: "100%", lg: "calc(50% - 10px)" } }}>
             <Carousel>
-              {product?.images.map((image, index) => {
+              {(product?.images || []).map((image, index) => {
                 return (
                   <img
                     style={{
@@ -47,13 +47,21 @@ const ProductDetail = () => {
               })}
             </Carousel>
           </Box>
-          <Box sx={{ width: "50%", display: "flex", flexDirection: "column", gap: 2 }}>
-            <Box>{`Hạng vé: ${product?.class}`}</Box>
-            <Box>{`Số ghế: ${product?.seat}`}</Box>
-            <Box>{`Thời gian: ${moment(product?.event_time).format("DD/MM/YYYY HH:mm")}`}</Box>
-            <Box>{`Địa điểm: ${product?.event_location}`}</Box>
+          <Box sx={{ width: { xs: "100%", lg: "calc(50% - 10px)" }, display: "flex", flexDirection: "column", gap: 2, padding: "20px", border: "1px solid #ccc", borderRadius: "10px", height: "100%" }}>
             <Box>
-              {`Chủ vé: Võ Ngọc Quỳnh Mai - 0902550773 - vnqmai.hcmue@gmail.com`}
+              <Typography variant="body1">{`Hạng vé: ${product?.class}`}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="body1">{`Số ghế: ${product?.seat}`}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="body1">{`Thời gian: ${moment(product?.event_time).format("DD/MM/YYYY HH:mm")}`}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="body1">{`Địa điểm: ${product?.event_location}`}</Typography>
+            </Box>
+            <Box>
+              <Typography variant="body1">{`Chủ vé: Võ Ngọc Quỳnh Mai - 0902550773 - vnqmai.hcmue@gmail.com`}</Typography>
             </Box>
             <Box>
               <Button variant="outlined" onClick={() => navigate(`/order/${product?._id}`)}>Mua ngay</Button>
