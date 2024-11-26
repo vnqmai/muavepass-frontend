@@ -18,6 +18,7 @@ export const lightTheme = createTheme({
     },
     background: {
       topBar: "#fffff",
+      footer: "#f7f7f7"
     },
   },
 });
@@ -32,6 +33,7 @@ export const darkTheme = createTheme({
     },
     background: {
       topBar: "#242526",
+      footer: "#242526"
     },
     button: {
       active: "#2F3031",

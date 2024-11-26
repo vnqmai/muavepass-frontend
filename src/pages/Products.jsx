@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import { getListOfProducts } from "../api/productsApi";
 import BannerSlider from "../components/BannerSlider";
 import ProductCard from "../components/ProductCard";
+import Footer from "../components/Footer";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -43,13 +44,7 @@ export default function Products() {
         }
       </Grid>
 
-      {/* <Box
-        sx={{ padding: "30px", display: "flex", flexWrap: "wrap", gap: "30px" }}
-      >
-        {products.map((product, index) => (
-          <ProductCard product={product} key={index} />
-        ))}
-      </Box> */}
+      <Footer />
     </Box>
   );
 }

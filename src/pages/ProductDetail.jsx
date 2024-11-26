@@ -9,6 +9,7 @@ import { getProductDetail } from "../api/productsApi";
 import Header from "../components/Header";
 import Carousel from "react-material-ui-carousel";
 import moment from "moment";
+import Footer from "../components/Footer";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -69,6 +70,7 @@ const ProductDetail = () => {
           </Box>
         </Box>
       </Box>
+      <Footer></Footer>
     </>
   );
 };

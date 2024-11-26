@@ -15,6 +15,7 @@ import { getProductDetail } from "../api/productsApi";
 import { useParams } from "react-router-dom";
 import useScript from "react-script-hook";
 import ProductCard from "../components/ProductCard";
+import Footer from "../components/Footer";
 
 export default function DemoPayOS() {
   const [openDialogLoading, setOpenDialogLoading] = useState(false);
@@ -219,6 +220,7 @@ export default function DemoPayOS() {
           </Box>
         </form>
       </Box>
+      <Footer />
     </Box>
   );
 }

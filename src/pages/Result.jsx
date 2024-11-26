@@ -6,9 +6,13 @@ import { toast, ToastContainer } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getOrder } from "../api/payosApi";
 import Header from "../components/Header";
+import { getProductDetail } from "../api/productsApi";
+import ProductCard from "../components/ProductCard";
+import Footer from "../components/Footer";
 export default function Result() {
   const navigate = useNavigate();
   const [order, setOrder] = useState();
+  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   let orderCode = null;
@@ -38,6 +42,14 @@ export default function Result() {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (order) {
+      getProductDetail(order.product_id).then((data) => {
+        setProduct(data);
+      })
+    }
+  }, [order]);
   
   return (
     <Box>
@@ -59,19 +71,26 @@ export default function Result() {
           <Box sx={{textAlign: "center"}}>
             {
               order?.status == "PAID" ? (
-                <Typography variant="h6">Thanh toán thành công {order.product_id} - {order.status}</Typography>
+                <Typography variant="h6">Thanh toán thành công - Mã đơn: #{order.order_id}</Typography>
               ) : (
                 <Typography variant="h6">Thanh toán không thành công</Typography>
               )
             }
           </Box>
           <Box sx={{ marginTop: "20px" }}>
+            {
+              product ? (
+                <Box sx={{maxWidth: "500px", margin: "20px auto"}}>
+                  <ProductCard product={product} hideBuyNow />
+                </Box>
+              ) : null
+            }
             <Typography variant="h6" sx={{textAlign: "center"}}>Thông tin khách hàng</Typography>
             <Box sx={{maxWidth: "500px", margin: "0 auto"}}>
               <Typography variant="body1">Họ tên: {order.fullname}</Typography>
               <Typography variant="body1">Email: {order.email}</Typography>
               <Typography variant="body1">Số điện thoại: {order.phone}</Typography>
-              <Typography variant="body1">CCCD: {order.userId}</Typography>
+              <Typography variant="body1">CCCD: {order.user_id}</Typography>
             </Box>
           </Box>
           <Box sx={{ marginTop: "20px" }}>
@@ -83,6 +102,7 @@ export default function Result() {
           {/* <PaymentFieldsTableDemo data={order?.webhook_snapshot} /> */}
         </Box>
       )}
+      <Footer />
     </Box>
   );
 }
