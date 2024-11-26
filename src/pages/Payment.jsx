@@ -26,7 +26,7 @@ const Payment = () => {
   const handleListItemClick = (event, index) => {
     // setSelectedIndex(index);
   };
-  const rows = [{ id: 1, name: "Mì tôm hảo hảo ly", quantity: 1, price: 1000 }];
+  const rows = [{ id: 1, name: "Mì tôm hảo hảo ly", quantity: 1, price: 10000 }];
 
   return (
     <>
@@ -90,7 +90,7 @@ const Payment = () => {
               </Table>
             </TableContainer>
             <Typography className="!font-bold !ml-auto">
-              {"Tổng tiền:     1000đ"}
+              {"Tổng tiền:     10000đ"}
             </Typography>
           </Box>
           <PaymentMethod

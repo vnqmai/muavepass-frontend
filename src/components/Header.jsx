@@ -21,6 +21,7 @@ import TelegramIcon from "@mui/icons-material/Telegram";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
+import logo from "../assets/logo-full.svg";
 
 const StyledButton = styled(Button)`
   &:hover {
@@ -46,51 +47,10 @@ const Header = () => {
         </IconButton>
 
         <Box component={"div"} className="flex-row gap-2 flex">
-          <LogoButton theme={theme} />
-          <Box component={"div"} className="hidden md:flex">
-            <StyledButton
-              disableRipple
-              variant="raised"
-              style={{ backgroundColor: "transparent" }}
-              onClick={() => (window.location.href = "https://payos.vn/")}
-            >
-              <Typography
-                className="text-base font-thin  pt-2 normal-case hover:text-green-800	"
-                sx={{ color: "color.default" }}
-              >
-                Docs
-              </Typography>
-            </StyledButton>
-
-            <StyledButton
-              disableRipple
-              variant="raised"
-              style={{ backgroundColor: "transparent" }}
-              onClick={() =>
-                (window.location.href = "https://payos.vn/docs/downloads/")
-              }
-            >
-              <Typography className="text-base font-thin  pt-2 normal-case hover:text-green-800	">
-                Downloads
-              </Typography>
-            </StyledButton>
-            <StyledButton
-              disableRipple
-              variant="raised"
-              style={{ backgroundColor: "transparent" }}
-              onClick={() => navigate("/")}
-            >
-              <Typography
-                className="text-base font-thin  pt-2 normal-case text-green-800"
-                secondary
-              >
-                Sample & Demo
-              </Typography>
-            </StyledButton>
-          </Box>
+          <img src={logo} alt="muavepass" width={100} style={{cursor: "pointer"}} onClick={() => navigate("/")}/>
         </Box>
         <Box component={"div"} className="gap-3 flex flex-row items-center">
-          <Box className="hidden md:inline-flex">
+          {/* <Box className="hidden md:inline-flex">
             <IconButton
               aria-label="theme"
               color="default"
@@ -122,7 +82,7 @@ const Header = () => {
             }
           >
             Đăng nhập
-          </Button>
+          </Button> */}
           <Box className="hidden md:inline-flex">
             <ThemeButton theme={theme} />
           </Box>
@@ -134,8 +94,8 @@ const Header = () => {
         >
           <Box component={"div"} className="h-full">
             <Box component={"div"} className="flex flex-row gap-2">
-              <LogoButton theme={theme} />
-              <IconButton
+              <img src={logo} alt="muavepass" width={100} style={{cursor: "pointer"}} onClick={() => navigate("/")}/>
+              {/* <IconButton
                 aria-label="theme"
                 color="default"
                 onClick={() =>
@@ -143,13 +103,13 @@ const Header = () => {
                 }
               >
                 <TelegramIcon />
-              </IconButton>
+              </IconButton> */}
               <ThemeButton theme={theme} />
               <IconButton onClick={() => setOpenDrawer(false)}>
                 <CloseIcon />
               </IconButton>
             </Box>
-            <Box>
+            {/* <Box>
               <List>
                 <ListItem disablePadding className="p-2">
                   <ListItemButton
@@ -182,28 +142,13 @@ const Header = () => {
                   </ListItemButton>
                 </ListItem>
               </List>
-            </Box>
+            </Box> */}
           </Box>
         </Drawer>
       </Box>
     </ThemeProvider>
   );
 };
-const LogoButton = ({ theme }) => (
-  <StyledButton
-    disableRipple
-    variant="raised"
-    style={{ backgroundColor: "transparent" }}
-    className="hover:bg-white"
-    onClick={() => (window.location.href = "https://payos.vn/")}
-  >
-    <Logo
-      height={38}
-      width={100}
-      fill={theme.palette.mode === "light" ? "#6655FF" : "white"}
-    />
-  </StyledButton>
-);
 
 const ThemeButton = ({ theme }) => {
   {

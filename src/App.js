@@ -6,6 +6,8 @@ import { Box, Drawer, ThemeProvider } from "@mui/material";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Payment from "./pages/Payment";
+import ProductDetail from "./pages/ProductDetail";
+import Products from "./pages/Products";
 function App() {
   return (
     <Provider store={store}>
@@ -16,7 +18,7 @@ function App() {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <DemoPayOS />,
+    element: <Products />,
   },
   {
     path: "/payment",
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
     path: "/result",
     element: <Result />,
   },
+  {
+    path: "/products/:id",
+    element: <ProductDetail />,
+  },
+  {
+    path: "/order/:id",
+    element: <DemoPayOS />,
+  }
 ]);
 
 const Routes = () => {

@@ -16,6 +16,37 @@ export async function createPaymentLink(formData) {
   }
 }
 
+export async function createOrder(formData) {
+  try {
+    const res = await axios({
+      method: "POST",
+      url: `${process.env.REACT_APP_ORDER_URL}/order/create-order-log`,
+      data: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export async function updateOrderSuccess(orderCode) {
+  try {
+    const res = await axios({
+      method: "PUT",
+      url: `${process.env.REACT_APP_ORDER_URL}/${orderCode}/success`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export async function getListBank(){
     try {
         const res = await axios({
