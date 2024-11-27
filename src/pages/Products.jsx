@@ -33,13 +33,13 @@ export default function Products() {
         <meta property="og:title" content={`Mua Vé fan meeting Quang Hùng Day 3 - Muavepass.shop`} />
         <meta property="og:description" content={`Mua vé fan meeting Quang Hùng Day 3 ngay hôm nay tại Muavepass.shop! Sự kiện đặc biệt với các hạng vé đa dạng và quyền lợi hấp dẫn. Đặt vé dễ dàng, nhanh chóng và uy tín!`} />
         <meta property="og:url" content="https://muavepass.shop" />
-        <meta property="og:image" content={require(`../assets/events/quang-hung-fmt-3.webp`)} />
+        <meta property="og:image" content={"/fmt.png"} />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`Mua Vé fan meeting Quang Hùng Day 3 - Muavepass.shop`} />
         <meta name="twitter:description" content={`Mua vé fan meeting Quang Hùng Day 3 ngay hôm nay tại Muavepass.shop! Sự kiện đặc biệt với các hạng vé đa dạng và quyền lợi hấp dẫn. Đặt vé dễ dàng, nhanh chóng và uy tín!`} />
-        <meta name="twitter:image" content={require(`../assets/events/quang-hung-fmt-3.webp`)} />
+        <meta name="twitter:image" content={"/fmt.png"} />
       </Helmet>
       {!products ? (
         <Backdrop
