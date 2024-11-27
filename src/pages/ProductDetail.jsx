@@ -10,7 +10,7 @@ import Header from "../components/Header";
 import Carousel from "react-material-ui-carousel";
 import moment from "moment";
 import Footer from "../components/Footer";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 
 const ProductDetail = () => {
   const { id } = useParams();

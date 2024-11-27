@@ -6,7 +6,7 @@ import { getListOfProducts } from "../api/productsApi";
 import BannerSlider from "../components/BannerSlider";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
