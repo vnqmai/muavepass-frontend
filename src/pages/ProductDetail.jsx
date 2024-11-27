@@ -44,9 +44,6 @@ const ProductDetail = () => {
         <meta name="twitter:title" content={`Mua Vé ${product?.name} - Muavepass.shop`} />
         <meta name="twitter:description" content={`Mua vé ${product?.name} ngay hôm nay tại Muavepass.shop! Sự kiện đặc biệt với các hạng vé đa dạng và quyền lợi hấp dẫn. Đặt vé dễ dàng, nhanh chóng và uy tín!`} />
         <meta name="twitter:image" content={require(`../assets/events/${product?.image}`)} />
-        
-        {/* Favicon */}
-        <link rel="icon" href={require(`../../public/logo-square.ico`)} type="image/x-icon" />
       </Helmet>
       <Header></Header>
       <Box sx={{ p: "30px" }}>

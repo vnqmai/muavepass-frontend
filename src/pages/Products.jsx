@@ -40,9 +40,6 @@ export default function Products() {
         <meta name="twitter:title" content={`Mua Vé fan meeting Quang Hùng Day 3 - Muavepass.shop`} />
         <meta name="twitter:description" content={`Mua vé fan meeting Quang Hùng Day 3 ngay hôm nay tại Muavepass.shop! Sự kiện đặc biệt với các hạng vé đa dạng và quyền lợi hấp dẫn. Đặt vé dễ dàng, nhanh chóng và uy tín!`} />
         <meta name="twitter:image" content={require(`../assets/events/quang-hung-fmt-3.webp`)} />
-        
-        {/* Favicon */}
-        <link rel="icon" href={require(`../../public/logo-square.ico`)} type="image/x-icon" />
       </Helmet>
       {!products ? (
         <Backdrop
