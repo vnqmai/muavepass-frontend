@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import Carousel from "react-material-ui-carousel";
 import moment from "moment";
 import Footer from "../components/Footer";
+import { Helmet } from "react-helmet-async";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -24,6 +25,29 @@ const ProductDetail = () => {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="title" content={`Mua Vé ${product?.name} - Muavepass.shop`} />
+        <meta name="description" content={`Mua vé ${product?.name} ngay hôm nay tại Muavepass.shop! Sự kiện đặc biệt với các hạng vé đa dạng và quyền lợi hấp dẫn. Đặt vé dễ dàng, nhanh chóng và uy tín!`} />
+        <meta name="keywords" content="fan meeting, Quang Hùng, vé concert, Muavepass.shop, mua vé nhanh, vé chính hãng, sự kiện âm nhạc, fan Quang Hùng" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`Mua Vé ${product?.name} - Muavepass.shop`} />
+        <meta property="og:description" content={`Mua vé ${product?.name} ngay hôm nay tại Muavepass.shop! Sự kiện đặc biệt với các hạng vé đa dạng và quyền lợi hấp dẫn. Đặt vé dễ dàng, nhanh chóng và uy tín!`} />
+        <meta property="og:url" content="https://muavepass.shop" />
+        <meta property="og:image" content={require(`../assets/events/${product?.image}`)} />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`Mua Vé ${product?.name} - Muavepass.shop`} />
+        <meta name="twitter:description" content={`Mua vé ${product?.name} ngay hôm nay tại Muavepass.shop! Sự kiện đặc biệt với các hạng vé đa dạng và quyền lợi hấp dẫn. Đặt vé dễ dàng, nhanh chóng và uy tín!`} />
+        <meta name="twitter:image" content={require(`../assets/events/${product?.image}`)} />
+        
+        {/* Favicon */}
+        <link rel="icon" href={require(`../../public/logo-square.ico`)} type="image/x-icon" />
+      </Helmet>
       <Header></Header>
       <Box sx={{ p: "30px" }}>
         <Typography variant="h4">{`${product?.product_name} (ghế: ${product?.seat})`}</Typography>
